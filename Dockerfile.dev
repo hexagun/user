@@ -1,0 +1,16 @@
+FROM golang:1.23-alpine
+
+WORKDIR /app
+
+COPY go.mod ./
+RUN go mod tidy
+
+# Install envsubst
+RUN apk add --no-cache gettext
+
+COPY . .
+RUN go build -o main .
+
+RUN chmod +x entrypoint.sh
+
+CMD ["./entrypoint.sh"]
